@@ -1,0 +1,19 @@
+{
+  "name": "proto_kuub",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Prototype of Kuub backend, for mininal services",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server.js"
+  },
+  "author": "Ab C",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.9.2",
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^16.8.0"
+  }
+}
