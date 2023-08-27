@@ -2,9 +2,15 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import typeDefs from "./Graphql/typeDefs.js";
 import resolvers from "./Graphql/resolvers.js";
+import { sequelize_connection } from "./Sequelize/connection.js";
 
-
-
+//sequelize connection testing
+try {
+  await sequelize_connection.authenticate();
+  //console.log(db.User.findAll());
+} catch (error) {
+  console.error("Unable to connect to the database:", error);
+}
 
 const server = new ApolloServer({
   typeDefs,

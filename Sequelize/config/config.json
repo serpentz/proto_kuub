@@ -1,22 +1,26 @@
 {
   "development": {
     "database": "development_kuub",
-    "host": "0.0.0.0",
-    "dialect": "sqlite",
-    "storage": "./development.sqlite"
+    "host": "127.0.0.1",
+    "username": "postgres",
+    "password": "toor",
+    "dialect": "postgres",
+    "use_env_variable": false
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "use_env_variable": false
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "database_production",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "use_env_variable": true
   }
 }

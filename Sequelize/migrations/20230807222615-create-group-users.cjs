@@ -28,6 +28,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('GroupUsers');
+    await queryInterface.bulkDelete('GroupUsers', null, {});
   }
 };

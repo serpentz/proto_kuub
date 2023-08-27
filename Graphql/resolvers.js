@@ -1,9 +1,9 @@
-import { users, groups } from "./datasources.js";
+import { GroupsData, UsersDataPromise, groups, users } from "./datasources.js";
 
 export default {
   Query: {
-    users() {
-      return users;
+    async users() {
+      return await UsersDataPromise;
     },
     groups() {
       return groups;
@@ -24,7 +24,7 @@ export default {
         __typename: "ServerError",
         status: "Error",
         code: "404",
-        message: "Cannot find group assosiated with given parameters.",
+        message: "Cannot find group associated with given parameters.",
       };
     },
   },
