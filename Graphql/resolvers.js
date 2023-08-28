@@ -16,7 +16,7 @@ export default {
           __typename: "ServerSuccess",
           group: {...group},
           status: "Success",
-          code: "@TODO",
+          code: "200",
         };
       }
 

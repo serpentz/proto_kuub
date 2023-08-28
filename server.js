@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import typeDefs from "./Graphql/typeDefs.js";
+// import typeDefs from "./Graphql/typeDefs.js";
+import typeDefs from './Graphql/TypesDefs/index.js'
 import resolvers from "./Graphql/resolvers.js";
 import { sequelize_connection } from "./Sequelize/connection.js";
 
