@@ -17,6 +17,7 @@
   "author": "Absalom",
   "license": "ISC",
   "dependencies": {
+    "@apollo/federation": "^0.38.1",
     "@apollo/server": "^4.9.2",
     "@graphql-tools/graphql-file-loader": "^8.0.0",
     "@graphql-tools/load": "^8.0.0",

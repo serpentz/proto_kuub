@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.TEXT
       },
-      end_date: {
+      endDate: {
         allowNull: false,
         type: Sequelize.DATE
       },

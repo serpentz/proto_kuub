@@ -1,55 +1,43 @@
 import { Group } from "../Sequelize/models/group.js";
 import { User } from "../Sequelize/models/user.js";
 
-// const UsersDataPromise = new Promise((resolve, reject) => {
-//   let users = User.findAll();
-
-//   return users;
-// });
-
-const UsersDataPromise = await User.findAll({raw: true})
-  .then((response) => {
-    console.log(response);
-    return response;
-  })
-  .catch((error) => {
+async function UsersDataPromise() {
+  try {
+    let users = await User.findAll({ raw: true });
+    return users;
+  } catch (error) {
     return {
       status: "Error",
       code: "500",
-      message:
-        "Unknown Error on Sequelize side. Contact lead. \n ------------ StackTrace ------------" +
-        error,
+      message: error,
     };
-  });
-
-async function GroupsData() {
-  return await Group.findAll();
+  }
 }
 
-// /**
-const users = [
-  {
-    username: "the_awakening",
-    email: "KateChopin@gmail.com",
-  },
-  {
-    username: "city_of_glass",
-    email: "PaulAuster@gmail.com",
-  },
-];
+async function GroupsDataPromise() {
+  try {
+    let groups = await Group.findAll({ raw: true });
+    return groups;
+  } catch (error) {
+    return {
+      status: "Error",
+      code: "500",
+      message: error,
+    };
+  }
+}
 
-const groups = [
-  {
-    id: "1",
-    name: "travels",
-    amount: "100",
-  },
-  {
-    id: "2",
-    name: "Large Payments",
-    amount: "2000",
-  },
-];
-// */
+async function FindGroupPromise(id) {
+  try {
+    let group = await Group.findByPk(id, {include: [{model: User, as: 'members'}]});
+    return group;
+  } catch (error) {
+    return {
+      status: "Error",
+      code: "500",
+      message: error,
+    };
+  }
+}
 
-export { UsersDataPromise, GroupsData, users, groups };
+export { UsersDataPromise, GroupsDataPromise, FindGroupPromise};

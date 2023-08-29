@@ -1,20 +1,25 @@
-import { GroupsData, UsersDataPromise, groups, users } from "./datasources.js";
+import {
+  GroupsDataPromise,
+  UsersDataPromise,
+  FindGroupPromise,
+} from "./datasources.js";
 
 export default {
   Query: {
-    async users() {
-      return await UsersDataPromise;
+    users: async function () {
+      return await UsersDataPromise();
     },
-    groups() {
-      return groups;
+    groups: async function () {
+      return await GroupsDataPromise();
     },
-    findGroup(_, {id}, context, info) {
-      let group = groups.find((group) => group.id == id);
+    findGroup: async function (_, { id }, context, info) {
+      let group;
+      group = await FindGroupPromise(id);
 
       if (group) {
         return {
           __typename: "ServerSuccess",
-          group: {...group},
+          group: { ...group },
           status: "Success",
           code: "200",
         };

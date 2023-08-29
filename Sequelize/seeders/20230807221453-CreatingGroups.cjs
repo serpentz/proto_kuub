@@ -6,8 +6,8 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'Groups', [
-                 { name: "Group1", amount: "$500", interval: "monthly", end_date: "11/12/24" },
-                 { name: "Group2", amount: "$100", interval: "weekly", end_date: "12/11/23" }
+                 { name: "Group1", amount: "$500", interval: "monthly", endDate: "11/12/24" },
+                 { name: "Group2", amount: "$100", interval: "weekly", endDate: "12/11/23" }
               ],
       {}
     )

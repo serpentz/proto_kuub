@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    queryInterface.bulkInsert('GroupUsers', [{ user_id: 1, group_id: 1 }, { user_id: 2, group_id: 2 }, { user_id: 1, group_id: 2 }], {})
+    queryInterface.bulkInsert('GroupUsers', [{ UserId: 1, GroupId: 1 }, { UserId: 2, GroupId: 2 }, { UserId: 1, GroupId: 2 }], {})
   },
 
   async down(queryInterface, Sequelize) {

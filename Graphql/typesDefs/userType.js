@@ -1,7 +1,8 @@
+export default `
 type User{
   id: ID!
-  first_name: String
-  last_name: String
+  firstName: String
+  lastName: String
   username: String!
   email: String!
   createdAt: String
@@ -11,3 +12,4 @@ type User{
 type Query {
   users: [User]
 }
+`;

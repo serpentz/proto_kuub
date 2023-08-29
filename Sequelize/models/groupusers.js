@@ -5,8 +5,14 @@ class GroupUsers extends Model {}
 
 GroupUsers.init(
   {
-    user_id: { type: DataTypes.INTEGER, allowNull: false },
-    group_id: { type: DataTypes.INTEGER, allowNull: false },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    GroupId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize,
