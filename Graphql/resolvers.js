@@ -1,22 +1,27 @@
-import { users, groups } from "./datasources.js";
+import {
+  GroupsDataPromise,
+  UsersDataPromise,
+  FindGroupPromise,
+} from "./datasources.js";
 
 export default {
   Query: {
-    users() {
-      return users;
+    users: async function () {
+      return await UsersDataPromise();
     },
-    groups() {
-      return groups;
+    groups: async function () {
+      return await GroupsDataPromise();
     },
-    findGroup(_, {id}, context, info) {
-      let group = groups.find((group) => group.id == id);
+    findGroup: async function (_, { id }, context, info) {
+      let group;
+      group = await FindGroupPromise(id);
 
       if (group) {
         return {
           __typename: "ServerSuccess",
-          group: {...group},
+          group: { ...group },
           status: "Success",
-          code: "@TODO",
+          code: "200",
         };
       }
 
@@ -24,7 +29,7 @@ export default {
         __typename: "ServerError",
         status: "Error",
         code: "404",
-        message: "Cannot find group assosiated with given parameters.",
+        message: "Cannot find group associated with given parameters.",
       };
     },
   },
