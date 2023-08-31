@@ -25,6 +25,11 @@ module.exports = {
           key: "id",
         },
       },
+      role: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'member'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

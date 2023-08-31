@@ -7,7 +7,7 @@ type Group {
   endDate: String!
   createdAt: String!
   updatedAt: String!
-  members: [User]!
+  members: [User]
 }
 
 enum ResponseStatus {

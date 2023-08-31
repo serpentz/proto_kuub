@@ -7,6 +7,12 @@ type User{
   email: String!
   createdAt: String
   updatedAt: String
+  groups: [Group]
+  GroupUsers: GroupUsers
+}
+
+type GroupUsers{
+  role: String!
 }
 
 type Query {

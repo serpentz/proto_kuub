@@ -1,14 +1,14 @@
-import { GroupsDataPromise, FindGroupPromise } from "../datasources.js";
+import { GroupAPI } from "../../Sequelize/api/index.js";
 
 
 export default {
     Query: {
       groups: async function () {
-        return await GroupsDataPromise();
+        return await GroupAPI.getGroups();
       },
       findGroup: async function (_, { id }, context, info) {
         let group;
-        group = await FindGroupPromise(id);
+        group = await GroupAPI.getGroup(id);
   
         if (group) {
           return {

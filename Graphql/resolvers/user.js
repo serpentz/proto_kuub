@@ -1,9 +1,9 @@
-import { UsersDataPromise } from "../datasources.js";
+import { UserAPI } from "../../Sequelize/api/index.js";
 
 export default {
   Query: {
     users: async function () {
-      return await UsersDataPromise();
+      return await UserAPI.getUsers();
     },
   },
 };

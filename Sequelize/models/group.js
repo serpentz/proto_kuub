@@ -6,6 +6,7 @@ class Group extends Model {
     let {User, GroupUsers} = models
     
     Group.belongsToMany(User, {through: GroupUsers, as: 'members' })
+    // Group.hasMany(User, {through: GroupUsers, as: 'members' })
   }
 }
 

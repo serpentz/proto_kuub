@@ -1,7 +1,12 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize_connection as sequelize } from "../connection.js";
 
-class GroupUsers extends Model {}
+class GroupUsers extends Model {
+  static associate(models){
+    let {User} = models
+
+  }
+}
 
 GroupUsers.init(
   {
@@ -13,6 +18,11 @@ GroupUsers.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "member"
+    }
   },
   {
     sequelize,
