@@ -3,7 +3,7 @@ import { sequelize_connection as sequelize } from "../connection.js";
 
 class GroupUsers extends Model {
   static associate(models){
-    let {User} = models
+   
 
   }
 }

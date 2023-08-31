@@ -8,6 +8,7 @@ type Group {
   createdAt: String!
   updatedAt: String!
   members: [User]
+  payments: [Payment]
 }
 
 enum ResponseStatus {

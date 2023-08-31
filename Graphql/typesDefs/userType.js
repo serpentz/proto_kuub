@@ -9,6 +9,7 @@ type User{
   updatedAt: String
   groups: [Group]
   GroupUsers: GroupUsers
+  payments: [Payment]
 }
 
 type GroupUsers{

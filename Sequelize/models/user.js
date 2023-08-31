@@ -3,9 +3,10 @@ import { sequelize_connection as sequelize } from "../connection.js";
 
 class User extends Model {
   static associate(models){
-    let {Group, GroupUsers} = models
+    let {Group, GroupUsers, Payment} = models
     
-    User.belongsToMany(Group, {through: GroupUsers})
+    User.belongsToMany(Group, {through: GroupUsers, as: 'groups'})
+    User.hasMany(Payment, {as: 'payments'})
 
 
   }

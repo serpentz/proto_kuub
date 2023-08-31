@@ -1,13 +1,13 @@
 import { db } from "../models/index.js";
 
-const { User, Group } = db;
+const { User, Group, Payment } = db;
 
 export default {
   async getGroups() {
     try {
       let groups = await Group.findAll({
         include: [
-          { model: db.User, as: "members", through: { attributes: ["role"] } },
+          { model: User, as: "members", through: { attributes: ["role"] } },
         ],
       });
       if (groups) {
@@ -19,7 +19,7 @@ export default {
       return {
         status: "Error",
         code: "500",
-        message: error,
+        message: error.message,
       };
     }
   },
@@ -30,16 +30,32 @@ export default {
 
       group = await Group.findByPk(id, {
         include: [
-          { model: db.User, as: "members", through: { attributes: ["role"] } },
+          { model: User, as: "members", through: { attributes: ["role"] } },
+          { model: Payment, as: "payments" },
         ],
       });
+      return group.toJSON();
+    } catch (error) {
+      return {
+        status: "Error",
+        code: "500",
+        message: error.message,
+      };
+    }
+  },
+
+  async createGroup({ amount, interval, name }) {
+    try {
+      let group;
+
+      group = Group.build({ amount, interval, name });
 
       return group.toJSON();
     } catch (error) {
       return {
         status: "Error",
         code: "500",
-        message: error,
+        message:  error.message,
       };
     }
   },
