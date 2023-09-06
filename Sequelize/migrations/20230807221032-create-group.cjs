@@ -25,6 +25,19 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
+      OwnerId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users", 
+          key: "id",
+        },
+      },
+      privacy: {
+        allowNull: true,
+        type: Sequelize.STRING,
+        defaultValue: "public"
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

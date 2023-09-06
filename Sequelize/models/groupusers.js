@@ -2,10 +2,7 @@ import { Model, DataTypes } from "sequelize";
 import { sequelize_connection as sequelize } from "../connection.js";
 
 class GroupUsers extends Model {
-  static associate(models){
-   
-
-  }
+  static associate(models) {}
 }
 
 GroupUsers.init(
@@ -21,12 +18,21 @@ GroupUsers.init(
     role: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "member"
-    }
+      defaultValue: "member",
+    },
   },
   {
     sequelize,
     modelName: "GroupUsers",
+    validate: {
+      userAlreadyInGroup() {
+        console.log(sequelize.models)
+        let groupUser = sequelize.models.GroupUsers.findOne({where: {UserId: this.UserId, GroupId: this.GroupId }});
+        if (groupUser) {
+          throw new Error("User already in group!");
+        }
+      }
+    },
   }
 );
 

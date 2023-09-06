@@ -1,12 +1,6 @@
-import { readFileSync } from "fs";
-import path from "path";
 import _ from 'lodash'
 
-function getTypeDefs(filename) {
-  return gql(
-    readFileSync(path.join(process.cwd(), "resources", filename), "utf8")
-  );
-}
+let names = {"GroupUsers": "additional"}
 
 const toPlain = response => {
   const flattenDataValues = ({ dataValues }) =>
@@ -21,4 +15,31 @@ const toPlain = response => {
   return _.isArray(response) ? _.map(response, flattenDataValues) : flattenDataValues(response);
 };
 
-export { getTypeDefs, toPlain };
+const replace = (obj) => {
+
+  if (Array.isArray(obj)) {
+    for (let i = 0; i < obj.length; i++) {
+      replace(obj[i]);
+    }
+  }
+  else if (typeof obj === "object") {
+    for (const key in obj) {
+      const newKey = names[key] || key;
+      obj[newKey] = obj[key];
+      if (key !== newKey) {
+        delete obj[key];
+      }
+      replace(obj[newKey]);
+    }
+  }
+
+  return obj;
+};
+
+function format(data){
+  return replace(toPlain(data))
+}
+
+
+
+export { toPlain, replace, format };

@@ -22,13 +22,6 @@ let plugins = [
 if (!isProduction) {
   plugins.push(new webpack.HotModuleReplacementPlugin());
 }
-const entry = isProduction
-  ? ["babel-polyfill", path.resolve(path.join(__dirname, "./server.js"))]
-  : [
-      "webpack/hot/poll?1000",
-      "babel-polyfill",
-      path.resolve(path.join(__dirname, "./server.js")),
-    ];
 
 export default {
   mode: "development",

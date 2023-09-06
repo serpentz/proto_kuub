@@ -1,3 +1,4 @@
+import { format } from "../../helpers/index.js";
 import { db } from "../models/index.js";
 
 const { User, Group, Payment } = db;
@@ -10,11 +11,7 @@ export default {
           { model: User, as: "members", through: { attributes: ["role"] } },
         ],
       });
-      if (groups) {
-        groups = groups.map((el) => el.get({ plain: true }));
-      }
-      console.log(groups);
-      return groups;
+      return format(groups);
     } catch (error) {
       return {
         status: "Error",
@@ -32,9 +29,10 @@ export default {
         include: [
           { model: User, as: "members", through: { attributes: ["role"] } },
           { model: Payment, as: "payments" },
+          { model: User, as: "owner" }
         ],
       });
-      return group.toJSON();
+      return format(group);
     } catch (error) {
       return {
         status: "Error",
@@ -44,18 +42,24 @@ export default {
     }
   },
 
-  async createGroup({ amount, interval, name }) {
+  async createGroup({ amount, interval, name, endDate }) {
     try {
       let group;
 
-      group = Group.build({ amount, interval, name });
+      group = Group.create({ amount, interval, name, endDate });
 
-      return group.toJSON();
+      return {
+        __typename: "ServerSuccess",
+        group,
+        status: "Success",
+        code: "200",
+      };
     } catch (error) {
       return {
+        __typename: "ServerError",
         status: "Error",
         code: "500",
-        message:  error.message,
+        message: error.message,
       };
     }
   },

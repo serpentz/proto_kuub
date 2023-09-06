@@ -1,12 +1,28 @@
-'use strict';
+const  { faker } = require("@faker-js/faker");
+const _ =  require("lodash");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('GroupUsers', [{ UserId: 1, GroupId: 1, role: "admin" }, { UserId: 2, GroupId: 2, role: "member" }, { UserId: 1, GroupId: 2, role: "member" }], {})
+    let data = [];
+    let roles = ["admin", "member", "communicator"]
+
+    _.range(0, 50).forEach(() => {
+      data.push({
+        UserId: Math.floor(Math.random() * 20) +1,
+        GroupId: Math.floor(Math.random() * 10) +1,
+        role: roles[Math.floor(Math.random() * 3)],
+      });
+    });
+
+    await queryInterface.bulkInsert(
+      "GroupUsers",
+      data,
+      {}
+    );
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('GroupUsers', {}, null)
-  }
+    await queryInterface.bulkDelete("GroupUsers", {}, null);
+  },
 };

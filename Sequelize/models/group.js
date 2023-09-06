@@ -7,6 +7,7 @@ class Group extends Model {
 
     Group.belongsToMany(User, { through: GroupUsers, as: "members" });
     Group.hasMany(Payment, {as: 'payments'});
+    Group.belongsTo(User, {as: 'owner', foreignKey: "OwnerId"})
   }
 }
 
@@ -27,6 +28,19 @@ Group.init(
     endDate: {
       type: DataTypes.DATE,
       allowNull: false,
+    },
+    OwnerId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Users", 
+        key: "id",
+      },
+    },
+    privacy: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: "public"
     },
   },
   {
