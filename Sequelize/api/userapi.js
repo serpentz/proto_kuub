@@ -1,5 +1,5 @@
 import { format } from "../../helpers/index.js";
-import { decrypt } from "../Auth/index.js";
+import { decrypt, encrypt } from "../Auth/index.js";
 import { db } from "../models/index.js";
 import _ from "lodash";
 
@@ -58,15 +58,22 @@ export default {
   },
   async createUser({ username, firstName, lastName, email, password }) {
     try {
-      let formattedResponse, user;
-      user = User.create({ username, firstName, lastName, email, password });
-      formattedResponse = format(user);
+
+      let user, token;
+      let encryptedPassword = encrypt(password)
+
+      user = await User.create({ username, firstName, lastName, email, password: encryptedPassword });
+      console.log(format(user))
+      token = encrypt(format(user))
+
       return {
-        __typename: "GetUserServerSuccess",
-        user: formattedResponse,
+        __typename: "CreateUserServerSuccess",
+        user: format(user),
         status: "Success",
         code: "200",
+        token
       };
+
     } catch (error) {
       return {
         __typename: "ServerError",
@@ -78,9 +85,9 @@ export default {
   },
   async loginUser(username, password) {
     try {
-      let passwordMatch, user;
+      let passwordMatch, foundUser, response;
 
-      let foundUser = await User.findOne({ where: { username } });
+      foundUser = await User.findOne({ where: { username } });
 
       if (!foundUser) {
         return {
@@ -93,7 +100,6 @@ export default {
 
       passwordMatch = decrypt(foundUser.password).payload === password;
       
-
       if (!passwordMatch) {
         return {
           __typename: "ServerError",
@@ -103,7 +109,7 @@ export default {
         };
       }
 
-      let response = await this.findUser(foundUser.id);
+      response = await this.findUser(foundUser.id);
 
       return {
         __typename: "GetUserServerSuccess",

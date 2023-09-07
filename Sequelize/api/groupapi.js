@@ -9,6 +9,7 @@ export default {
       let groups = await Group.findAll({
         include: [
           { model: User, as: "members", through: { attributes: ["role"] } },
+          { model: User, as: "owner" }
         ],
       });
       return format(groups);
@@ -42,11 +43,11 @@ export default {
     }
   },
 
-  async createGroup({ amount, interval, name, endDate }) {
+  async createGroup({ amount, interval, name, endDate, OwnerId }) {
     try {
       let group;
 
-      group = Group.create({ amount, interval, name, endDate });
+      group = await Group.create({ amount, interval, name, endDate, OwnerId });
 
       return {
         __typename: "ServerSuccess",

@@ -28,7 +28,19 @@ export default {
   },
   Mutation: {
     createGroup: async function (_, { group }, context, info) {
-      return await GroupAPI.createGroup(group);
+      const { user } = context;
+      // console.log(context)
+      if (!user) {
+        return {
+          __typename: "ServerError",
+          status: "Error",
+          code: "403",
+          message:
+            "You Must be logged in to create a group. Try again with a token(OAuth)",
+        };
+      }
+      console.log({ ...group, OwnerId: user.id })
+      return await GroupAPI.createGroup({ ...group, OwnerId: user.id });
     },
   },
 };

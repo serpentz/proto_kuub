@@ -8,16 +8,18 @@ export default {
     user: async function (_, { id }, context, info) {
       return await UserAPI.findUser(id);
     },
-  },
-  Mutation:{
-    createUser: async function (
+    loginUser: async function (
       _,
-      {user },
+      { user: { username, password } },
       context,
       info
     ) {
-
+      return await UserAPI.loginUser(username, password);
+    },
+  },
+  Mutation: {
+    createUser: async function (_, { user }, context, info) {
       return await UserAPI.createUser(user);
     },
-  }
+  },
 };

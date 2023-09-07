@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import { UserAPI } from "../api/index.js";
+import { User } from "../models/user.js";
+import { format } from "../../helpers/index.js";
 
 function encrypt(data) {
   return jwt.sign(data, "test");
@@ -22,30 +23,42 @@ function decrypt(token) {
   };
 }
 
-function getUser(token) {
+/**  Token decrypted schema 
+{
+  id: 27,
+  username: 'Ozella411011',
+  firstName: 'Ozella40',
+  lastName: 'Ozella40',
+  email: 'Ozella411011@gmail.com',
+  password: 'eyJhbGciOiJIUzI1NiJ9.T3plbGxhNDExMDEx.KAFKQ-COT4bCGQFRmOXn5by6WO0JReyc4V35XFEczJ8',
+  updatedAt: 2023-09-06T22:28:45.849Z,
+  createdAt: 2023-09-06T22:28:45.849Z
+}
+ */
+async function getUser(token) {
   let user;
-  let {payload, error} = decrypt(token);
+
+  let {
+    payload: { id },
+    error,
+  } = decrypt(token);
 
   if (error) {
-    return {
-      error: "getUser payload not in correct format"
-    }
+    throw new Error(error);
   }
 
-  // user = UserAPI.findUser(decodedUser.id);
-  user = UserAPI.findUser(1);
-
-  if (!user) {
-    return {
-      error: "getUser UserId not in database"
-    }
+  if (!id) {
+    throw new Error("payload has been tampered with");
   }
 
-  return user;
+  user = await User.findOne({ where: { id } });
+
+  if (!user.id) {
+    throw new Error("There is no User associated with this token.");
+  }
+  
+
+  return format(user);
 }
 
-function login(username, password) {
-
-}
-
-export { encrypt, decrypt, getUser, login };
+export { encrypt, decrypt, getUser };
