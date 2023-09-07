@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('GroupUsers', {
+    await queryInterface.createTable("Payments", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       UserId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Users", 
+          model: "Users",
           key: "id",
         },
       },
@@ -21,28 +21,38 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Groups", 
+          model: "Groups",
           key: "id",
         },
       },
-      role: {
+      amount: {
         allowNull: false,
         type: Sequelize.STRING,
-        defaultValue: 'member'
+        defaultValue: "0.00",
+      },
+      currency: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: "USD($)",
+      },
+      privacy: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: "public",
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date().toISOString()
+        defaultValue: new Date().toISOString(),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date().toISOString()
-      }
+        defaultValue: new Date().toISOString(),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('GroupUsers', null, {});
-  }
+    await queryInterface.dropTable("Payments");
+  },
 };

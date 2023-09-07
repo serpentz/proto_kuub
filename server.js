@@ -1,31 +1,91 @@
+import dotenv from "dotenv";
+import express, { json } from "express";
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
+import { expressMiddleware } from "@apollo/server/express4";
+import cors from "cors";
 import typeDefs from "./Graphql/typesDefs/index.js";
 import resolvers from "./Graphql/resolvers/index.js";
+import { getUser } from "./Sequelize/Auth/index.js";
 import { sequelize_connection } from "./Sequelize/connection.js";
-import db from "./Sequelize/models/index.js";
+import tester from "./tester.js";
+import { GraphQLError } from "graphql";
 
-//sequelize connection testing
+dotenv.config();
+
+const PORT = process.env.PORT || 4000;
+const app = express();
+
+const corsConfig = {
+  credentials: true,
+  allowedHeaders: ["Authorization"],
+  exposedHeaders: ["Authorization"],
+};
+
+// app.use(cors());
+app.use(express.json());
+
 try {
   await sequelize_connection.authenticate();
-  // console.log(await db.Group.findByPk(1, { include: db.User, raw: true }));
-  let group = (await db.Group.findByPk(2, {include: [{model: db.User, as: 'members'}]})).toJSON()
-  console.log(JSON.stringify(group,null,2))
+  await tester(sequelize_connection);
 } catch (error) {
   console.error("Unable to connect to the database:", error);
 }
 
+// const authenticate = async ({ req }) => {
+//   // get the user token from the headers
+//   const token = req.headers.authorization || '';
+
+//   // try to retrieve a user with the token
+//   const user = getUser(token);
+
+//   // optionally block the user
+//   // we could also check user roles/permissions here
+//   if (!user)
+//     // throwing a `GraphQLError` here allows us to specify an HTTP status code,
+//     // standard `Error`s will have a 500 status code by default
+//     throw new GraphQLError('User is not authenticated', {
+//       extensions: {
+//         code: 'UNAUTHENTICATED',
+//         http: { status: 401 },
+//       },
+//     });
+
+//   // add the user to the context
+//   return { user };
+// }
+
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers
 });
 
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
-});
+await server.start();
 
-console.log(`🚀  Server ready at: ${url}`);
+app.use(
+  "/graphql",
+  cors(),
+  json(),
+  expressMiddleware(server, {
+    context: async ({ req }) => {
+      const token = req.headers.token || "";
+
+      const user = await getUser(token);
+      
+      if (!user) {
+        console.log("No user in Context, no token passed in");
+        throw new GraphQLError("User is not authenticated", {
+          extensions: {
+            code: "UNAUTHENTICATED",
+            http: { status: 401 },
+          },
+        });
+      }
+
+      return { user };
+    },
+  })
+);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port: ${PORT}`);
+});

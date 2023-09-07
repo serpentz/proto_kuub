@@ -5,9 +5,21 @@ type Group {
   amount: String!
   interval: String!
   endDate: String!
+  privacy: String!
+  owner: User
+  members: [User]
+  payments: [Payment]
+  additional: GroupUsers
   createdAt: String!
   updatedAt: String!
-  members: [User]!
+}
+
+input CreateGroupInput{
+  name: String!
+  amount: String!
+  interval: String!
+  endDate: String!
+  privacy: String
 }
 
 enum ResponseStatus {
@@ -39,9 +51,14 @@ type ServerError implements ErrorResponse {
 }
 
 union FindGroupResponse = ServerSuccess | ServerError
+union CreateGroupResponse = ServerSuccess | ServerError
 
 type Query {
   groups: [Group]
   findGroup(id: ID!): FindGroupResponse!
+}
+
+type Mutation{
+  createGroup(group: CreateGroupInput): CreateGroupResponse!
 }
 `;

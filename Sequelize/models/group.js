@@ -1,11 +1,13 @@
 import { Model, DataTypes } from "sequelize";
-import { sequelize_connection as sequelize} from "../connection.js";
+import { sequelize_connection as sequelize } from "../connection.js";
 
 class Group extends Model {
-  static associate(models){
-    let {User, GroupUsers} = models
-    
-    Group.belongsToMany(User, {through: GroupUsers, as: 'members' })
+  static associate(models) {
+    let { User, GroupUsers, Payment } = models;
+
+    Group.belongsToMany(User, { through: GroupUsers, as: "members" });
+    Group.hasMany(Payment, {as: 'payments'});
+    Group.belongsTo(User, {as: 'owner', foreignKey: "OwnerId"})
   }
 }
 
@@ -27,6 +29,19 @@ Group.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    OwnerId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Users", 
+        key: "id",
+      },
+    },
+    privacy: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: "public"
+    },
   },
   {
     sequelize,
@@ -36,12 +51,10 @@ Group.init(
 
 /** associations  */
 
+// Group.associations = function(models){
+//   let {User, GroupUsers} = models
 
-Group.associations = function(models){
-  let {User, GroupUsers} = models
-  console.log(User)
-  
-  Group.hasMany(User, {through: GroupUsers, as: 'members' })
-}
+//   Group.hasMany(User, {through: GroupUsers, as: 'members' })
+// }
 
-export {Group}
+export { Group };

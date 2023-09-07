@@ -3,10 +3,11 @@ import { Sequelize } from "sequelize";
 import { User } from "./user.js";
 import { Group } from "./group.js";
 import { GroupUsers } from "./groupusers.js";
+import { Payment } from "./payment.js";
 import { sequelize_connection as sequelize } from "../connection.js";
 
 const db = {};
-const models = [User, Group, GroupUsers];
+const models = [User, Group, GroupUsers,Payment];
 
 for (let model of models) {
   db[model.name] = model;
@@ -21,4 +22,4 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-export default db;
+export { db };

@@ -9,7 +9,12 @@
             "request": "launch",
             "name": "Launch Server.js",
             "program": "${workspaceRoot}/server.js",
-            "outFiles": [ "${workspaceRoot}/.compiled/**/*.js" ]
+            "outFiles": [ "${workspaceRoot}/.compiled/**/*.js" ],
+            "skipFiles": ["<node_internals>/**"],
+            "runtimeArgs": [
+                "--harmony",
+                "--no-deprecation"
+            ],
           }
     ]
 }
