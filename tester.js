@@ -17,7 +17,7 @@ export default async function (sequelize) {
     password: "password",
   };
 
-  // let groupUser = await GroupUsers.create({Userid:1, GroupId:3, role: "member"})
+  // let groupUser = await GroupUsers.create({UserId:1, GroupId:3, role: "member"})
   // let user = await UserAPI.createUser(userData);
   //  console.log(groupUser);
 }

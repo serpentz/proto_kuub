@@ -20,6 +20,11 @@ input CreateUserInput {
   password: String!
 }
 
+input UserLoginInput{
+  username: String!
+  password: String!
+}
+
 type GroupUsers{
   role: String!
 }
@@ -30,14 +35,23 @@ type GetUserServerSuccess {
   user: User!
 }
 
+type CreateUserServerSuccess {
+  status: ResponseStatus!
+  code: String
+  user: User!
+  token: String!
+}
+
 union GetUserResponse = GetUserServerSuccess | ServerError
+union CreateUserResponse = CreateUserServerSuccess | ServerError
 
 type Query {
   users: [User]
   user(id: ID!): GetUserResponse!
+  loginUser(user: UserLoginInput): GetUserResponse!
 }
 
 type Mutation {
-  createUser(user: CreateUserInput!): GetUserResponse!
+  createUser(user: CreateUserInput): CreateUserResponse!
 }
 `;

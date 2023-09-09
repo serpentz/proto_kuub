@@ -9,6 +9,7 @@ export default {
       let groups = await Group.findAll({
         include: [
           { model: User, as: "members", through: { attributes: ["role"] } },
+          { model: User, as: "owner" }
         ],
       });
       return format(groups);
@@ -21,10 +22,11 @@ export default {
     }
   },
 
-  async getGroup(id) {
+  async findGroup(id) {
     try {
+      
       let group;
-
+      
       group = await Group.findByPk(id, {
         include: [
           { model: User, as: "members", through: { attributes: ["role"] } },
@@ -32,6 +34,11 @@ export default {
           { model: User, as: "owner" }
         ],
       });
+
+      if(!group){
+        return null;
+      }
+      
       return format(group);
     } catch (error) {
       return {
@@ -42,11 +49,11 @@ export default {
     }
   },
 
-  async createGroup({ amount, interval, name, endDate }) {
+  async createGroup({ amount, interval, name, endDate, OwnerId }) {
     try {
       let group;
 
-      group = Group.create({ amount, interval, name, endDate });
+      group = await Group.create({ amount, interval, name, endDate, OwnerId });
 
       return {
         __typename: "ServerSuccess",
