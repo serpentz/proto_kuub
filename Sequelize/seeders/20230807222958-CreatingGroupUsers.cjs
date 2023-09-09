@@ -7,7 +7,7 @@ module.exports = {
     let data = [];
     let roles = ["admin", "member", "communicator"]
 
-    _.range(0, 50).forEach(() => {
+    _.range(0, 100).forEach(() => {
       data.push({
         UserId: Math.floor(Math.random() * 20) +1,
         GroupId: Math.floor(Math.random() * 10) +1,

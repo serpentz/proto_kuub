@@ -2,7 +2,12 @@ import { Model, DataTypes } from "sequelize";
 import { sequelize_connection as sequelize } from "../connection.js";
 
 class Payment extends Model {
-  static associate(models) {}
+  static associate(models) {
+    const {User, Group} = models;
+
+    Payment.belongsTo(User, {foreignKey: "UserId"})
+    Payment.belongsTo(Group, {foreignKey: "GroupId"})
+  }
 }
 Payment.init(
   {
