@@ -53,7 +53,7 @@ async function getUser(token) {
 
   user = await User.findOne({ where: { id } });
 
-  if (!user.id) {
+  if (!user) {
     throw new Error("There is no User associated with this token.");
   }
   

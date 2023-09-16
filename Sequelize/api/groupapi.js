@@ -22,10 +22,11 @@ export default {
     }
   },
 
-  async getGroup(id) {
+  async findGroup(id) {
     try {
+      
       let group;
-
+      
       group = await Group.findByPk(id, {
         include: [
           { model: User, as: "members", through: { attributes: ["role"] } },
@@ -33,6 +34,11 @@ export default {
           { model: User, as: "owner" }
         ],
       });
+
+      if(!group){
+        return null;
+      }
+      
       return format(group);
     } catch (error) {
       return {
