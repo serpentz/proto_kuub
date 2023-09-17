@@ -56,7 +56,9 @@ try {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  introspection: false,
+  playground: false
 });
 
 await server.start();
@@ -67,7 +69,11 @@ app.use(
   json(),
   expressMiddleware(server, {
     context: async ({ req }) => {
-      const token = req.headers.token || "";
+      const token = req.headers.token || false;
+
+      if(!token){
+        return {}
+      }
 
       const user = await getUser(token);
       

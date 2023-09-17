@@ -12,6 +12,7 @@
     "compile": "babel . --out-dir ./public --source-maps --watch",
     "build": "babel ./server.js -d dist",
     "webpack": "webpack-dev-server --config webpack.config.js",
+    "docker": "npm run reset:db:pg && npm run dev",
     "dev": "nodemon ./server.js"
   },
   "author": "Absalom",
