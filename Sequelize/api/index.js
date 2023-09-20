@@ -1,4 +1,5 @@
-import GroupAPI from "./groupapi.js";
-import UserAPI from "./userapi.js";
+import GroupAPI from "./GroupApi.js";
+import UserAPI from "./UserApi.js";
+import PaymentApi from './PaymentApi.js'
 
-export { GroupAPI, UserAPI };
+export { GroupAPI, UserAPI , PaymentApi};
