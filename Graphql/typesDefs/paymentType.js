@@ -39,7 +39,7 @@ type Query {
 }
 
 type Mutation {
-  makePayment(user: MakePaymentInput): MakePaymentResponse!
+  makePayment(payment: MakePaymentInput): MakePaymentResponse!
   cancelPayment(user: MakePaymentInput): CancelPaymentResponse!
 }
 `;

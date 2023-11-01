@@ -57,8 +57,8 @@ try {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  introspection: false,
-  playground: false
+  // introspection: false,
+  // playground: false
 });
 
 await server.start();

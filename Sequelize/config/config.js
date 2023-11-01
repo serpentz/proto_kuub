@@ -1,6 +1,5 @@
 import dotenv from "dotenv"
 dotenv.config()
-console.log(process.env.DATABASE_HOST )
 
 export default {
   "development": {
@@ -8,7 +7,7 @@ export default {
     "host": process.env.DATABASE_HOST || "127.0.0.1",
     "port":process.env.DATABASE_PORT || 5432,
     "username": "postgres",
-    "password": "postgres",
+    "password": process.env.DATABASE_PASSWORD || "toor",
     "dialect": "postgres",
     "use_env_variable": false
   },

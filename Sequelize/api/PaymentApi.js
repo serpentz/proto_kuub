@@ -6,8 +6,7 @@ import _ from "lodash";
 const { User, Group, Payment } = db;
 
 export default {
-  async getAllUserPayments(userObj) {
-    const { id: UserId } = userObj;
+  async getAllUserPayments({ id: UserId }) {
 
     let user;
 
@@ -24,7 +23,7 @@ export default {
     const { id: GroupId } = groupObj;
     const { id: UserId } = userObj;
 
-    let groupPaymentsOfUser, group;
+    let payments, group;
 
     group = await Group.findByPk(GroupId);
 
@@ -32,29 +31,61 @@ export default {
         throw new Error("getGroupPayments return no Group for GroupId input")
     }
 
-    groupPaymentsOfUser = group.getPayments({ where: { UserId } });
+    payments = group.getPayments({ where: { UserId } });
 
-    if(!groupPaymentsOfUser){
+    if(!payments){
         throw new Error("groupPaymentsOfUser returned [] or bad input")
     }
+
+    return format(payments);
   },
 
-  async makePayment(groupObj, userObj, options) {
-    const { id: GroupId } = groupObj;
-    const { id: UserId } = userObj;
-    const {currency, amount} = options;
+  async makePayment({GroupId, UserId, currency, amount, privacy}) {
 
-    let paymentObj = {GroupId, UserId, currency, amount}
+    let paymentObj = {GroupId, UserId, currency, amount, privacy}
 
-    let payment;
+    let payment, group, user;
+
+    group = await Group.findByPk(GroupId)
+
+    if (!group) {
+      return {
+        __typename: "ServerError",
+        status: "Error",
+        code: "500",
+        message: "Group Does not exist",
+      }
+    }
+
+    user = format(await group.getMembers()).find(usr => usr.id === UserId)
+
+    if (!user) {
+      return {
+        __typename: "ServerError",
+        status: "Error",
+        code: "500",
+        message: "User in Group Does not exist",
+      }
+    }
 
     payment = await Payment.create(paymentObj);
 
     if (!payment) {
-        throw new Error("makePayment did not create the Payment")
+      return {
+        __typename: "ServerError",
+        status: "Error",
+        code: "500",
+        message: "makePayment did not create the Payment",
+      }
     }
 
-    return format(payment)
+    return {
+      __typename: "MakePaymentServerSuccess",
+      status: "Success",
+      payment: format(payment),
+      code: 200
+    }
+      
 
   },
   async cancelPayment(paymentObj) {
