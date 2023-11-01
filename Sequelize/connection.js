@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import config from "./config/config.json" assert {type: "json"}
+import config from "./config/config.js"
 
 // Option 3: Passing parameters separately (other dialects)
 const sequelize_connection = new Sequelize(

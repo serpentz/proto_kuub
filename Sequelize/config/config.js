@@ -1,9 +1,13 @@
-{
+import dotenv from "dotenv"
+dotenv.config()
+
+export default {
   "development": {
     "database": "development_kuub",
-    "host": "127.0.0.1",
+    "host": process.env.DATABASE_HOST || "127.0.0.1",
+    "port":process.env.DATABASE_PORT || 5432,
     "username": "postgres",
-    "password": "toor",
+    "password": process.env.DATABASE_PASSWORD || "toor",
     "dialect": "postgres",
     "use_env_variable": false
   },
