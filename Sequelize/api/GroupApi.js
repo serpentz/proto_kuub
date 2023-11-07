@@ -9,8 +9,16 @@ export default {
       let groups = await Group.findAll({
         include: [
           { model: User, as: "members", through: { attributes: ["role"] } },
-          { model: User, as: "owner", include: { model: Profile, as: "profile" } },
-          { model: Payment, as: "payments" },
+          {
+            model: User,
+            as: "owner",
+            include: { model: Profile, as: "profile" },
+          },
+          {
+            model: Payment,
+            as: "payments",
+            include: { model: User, as: "user" },
+          },
         ],
       });
       return format(groups);
@@ -29,9 +37,22 @@ export default {
 
       group = await Group.findByPk(id, {
         include: [
-          { model: User, as: "members", through: { attributes: ["role"] } },
-          { model: Payment, as: "payments" },
-          { model: User, as: "owner", include: { model: Profile, as: "profile" } },
+          {
+            model: User,
+            as: "members",
+            through: { attributes: ["role"] },
+            include: { model: Profile, as: "profile" },
+          },
+          {
+            model: Payment,
+            as: "payments",
+            include: { model: User, as: "user" },
+          },
+          {
+            model: User,
+            as: "owner",
+            include: { model: Profile, as: "profile" },
+          },
         ],
       });
 

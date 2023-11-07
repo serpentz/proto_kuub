@@ -5,8 +5,8 @@ class Payment extends Model {
   static associate(models) {
     const {User, Group} = models;
 
-    Payment.belongsTo(User, {foreignKey: "UserId"})
-    Payment.belongsTo(Group, {foreignKey: "GroupId"})
+    Payment.belongsTo(User, {as: 'user',foreignKey: "UserId"})
+    Payment.belongsTo(Group, {as: 'group',foreignKey: "GroupId"})
   }
 }
 Payment.init(
