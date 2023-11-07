@@ -4,10 +4,11 @@ import { User } from "./user.js";
 import { Group } from "./group.js";
 import { GroupUsers } from "./groupusers.js";
 import { Payment } from "./payment.js";
+import { Profile } from "./profile.js";
 import { sequelize_connection as sequelize } from "../connection.js";
 
 const db = {};
-const models = [User, Group, GroupUsers,Payment];
+const models = [User, Group, GroupUsers, Payment, Profile];
 
 for (let model of models) {
   db[model.name] = model;

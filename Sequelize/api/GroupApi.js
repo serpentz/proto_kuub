@@ -1,7 +1,7 @@
 import { format } from "../../helpers/index.js";
 import { db } from "../models/index.js";
 
-const { User, Group, Payment } = db;
+const { User, Group, Payment, Profile } = db;
 
 export default {
   async getGroups() {
@@ -9,7 +9,8 @@ export default {
       let groups = await Group.findAll({
         include: [
           { model: User, as: "members", through: { attributes: ["role"] } },
-          { model: User, as: "owner" }
+          { model: User, as: "owner", include: { model: Profile, as: "profile" } },
+          { model: Payment, as: "payments" },
         ],
       });
       return format(groups);
@@ -24,21 +25,20 @@ export default {
 
   async findGroup(id) {
     try {
-      
       let group;
-      
+
       group = await Group.findByPk(id, {
         include: [
           { model: User, as: "members", through: { attributes: ["role"] } },
           { model: Payment, as: "payments" },
-          { model: User, as: "owner" }
+          { model: User, as: "owner", include: { model: Profile, as: "profile" } },
         ],
       });
 
-      if(!group){
+      if (!group) {
         return null;
       }
-      
+
       return format(group);
     } catch (error) {
       return {

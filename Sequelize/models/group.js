@@ -49,12 +49,4 @@ Group.init(
   }
 );
 
-/** associations  */
-
-// Group.associations = function(models){
-//   let {User, GroupUsers} = models
-
-//   Group.hasMany(User, {through: GroupUsers, as: 'members' })
-// }
-
 export { Group };

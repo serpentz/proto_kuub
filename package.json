@@ -13,7 +13,7 @@
     "build": "babel ./server.js -d dist",
     "webpack": "webpack-dev-server --config webpack.config.js",
     "docker": "npm run reset:db:pg && npm run dev",
-    "local:docker:dev:run": "docker-compose -f ./docker-compose.dev.yaml build && docker-compose -f ./docker-compose.dev.yaml up",
+    "local:docker:dev": "docker-compose -f ./docker-compose.dev.yaml build && docker-compose -f ./docker-compose.dev.yaml up",
     "dev": "nodemon ./server.js"
   },
   "author": "Absalom",

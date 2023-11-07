@@ -3,7 +3,7 @@ import { decrypt, encrypt } from "../Auth/index.js";
 import { db } from "../models/index.js";
 import _ from "lodash";
 
-const { User, Group, Payment } = db;
+const { User, Group, Payment, Profile } = db;
 
 export default {
   async getUsers() {
@@ -15,6 +15,7 @@ export default {
             as: "groups",
           },
           { model: Payment, as: "payments" },
+          { model: Profile, as: "profile" },
         ],
       });
       return format(users);
@@ -37,6 +38,7 @@ export default {
             through: { attributes: ["role"] },
           },
           { model: Payment, as: "payments" },
+          { model: Profile, as: "profile" },
         ],
       });
 
@@ -63,7 +65,7 @@ export default {
       let encryptedPassword = encrypt(password)
 
       user = await User.create({ username, firstName, lastName, email, password: encryptedPassword });
-      console.log(format(user))
+
       token = encrypt(format(user))
 
       return {

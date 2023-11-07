@@ -10,6 +10,12 @@ type User{
   groups: [Group]
   additional: GroupUsers
   payments: [Payment]
+  profile: Profile
+}
+
+type Profile{
+  picture:  String
+  bio: String
 }
 
 input CreateUserInput {
